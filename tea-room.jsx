@@ -4,7 +4,7 @@
 // doodle in the foot row.
 
 const HERO_COPIES = {
-  rooms: 'a small marketplace of apps that work less like products and more like rooms. open one, sit a minute, close the tab. a new room opens every few days.',
+  rooms: 'hi i'm ayesha - a designer, poet, photographer, and musician who loves to vibe-code experimental apps and ecosystems. enjoy (:',
   welcome: 'welcome to the tea room — a marketplace of small soft apps made between songs and poems. nothing here you need, everything here you can sit inside for a minute.',
   vibe: 'the tea room is a marketplace of small soft apps. each one was vibe-coded in a sitting or two — half art, half utility, all slightly impractical. step in, take one home.',
 };
