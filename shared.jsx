@@ -12,42 +12,18 @@ const APPS = [
     slug: 'tea-room',
     title: 'tea room',
     n: '01',
-    tag: 'a slow chat with strangers',
-    desc: 'a tiny room with three seats. you sit. someone else sits. you steep a pot together while you talk. nobody can leave until the timer finishes brewing.',
+    tag: 'brew your own cup',
+    desc: 'pick a tea bag, a cup, a tea, a sweetener. watch your cup brew with its own little animation. hear the sound it makes — a small song unique to your combination. ephemeral by default, but shareable if you find one you love.',
     year: '2026',
     color: '#e8b4be',
-    medium: ['web', 'realtime', 'sound'],
+    medium: ['web', 'sound', 'toy'],
     accent: '#7a3848',
-  },
-  {
-    slug: 'worry-jar',
-    title: 'worry jar',
-    n: '02',
-    tag: 'put it down for a minute',
-    desc: 'write down what is heavy in your chest. close the lid. the jar holds it for you until you decide to open it again. some worries the jar will quietly compost.',
-    year: '2026',
-    color: '#cdb8e0',
-    medium: ['web', 'journaling', 'ambient'],
-    accent: '#4a3568',
-  },
-  {
-    slug: 'pocket-garden',
-    title: 'pocket garden',
-    n: '03',
-    tag: 'a plot that grows from your typing',
-    desc: 'every key you press waters something. fast typing makes weeds. slow typing makes flowers. open the tab tomorrow to see what your wednesday looked like.',
-    year: '2026',
-    color: '#bcd9b8',
-    medium: ['web', 'ambient', 'typography'],
-    accent: '#2f5238',
   },
 ];
 
-// In-progress / coming soon slots — keeps the marketplace feeling alive.
 const SOON = [
-  { slug: 'lullaby-machine',   title: 'lullaby machine',   tag: 'sleep loops from your voice notes' },
-  { slug: 'index-of-feelings', title: 'index of feelings', tag: 'a private dewey decimal' },
-  { slug: 'thumbprint',        title: 'thumbprint',        tag: 'a daily one-tap diary' },
+  { slug: 'worry-jar',         title: 'worry jar',         tag: 'leave it in the water with the rest' },
+  { slug: 'index-of-feelings', title: 'index of feelings', tag: 'a jukebox for your moods' },
 ];
 
 // ─── tiny abstract squiggles & blobs ──────────────────────────
