@@ -1,5 +1,5 @@
 // Tea Room v2 — clickable marketplace built on landing direction A.
-// Home shows a 3×2 grid (or marquee) of app-store icons; clicking any
+// Home shows a marquee of app-store icons; clicking any
 // icon opens its app page. Spiral lifted from variant B replaces the
 // doodle in the foot row.
 
@@ -53,9 +53,6 @@ function TeaRoom() {
             onChange={(v) => setTweak('heroCopy', v)} />
         </TweakSection>
         <TweakSection label="Layout">
-          <TweakRadio label="Marketplace" value={t.marketplaceLayout}
-            options={[{ value: 'grid', label: 'Grid' }, { value: 'marquee', label: 'Marquee' }]}
-            onChange={(v) => setTweak('marketplaceLayout', v)} />
           <TweakToggle label="Spiral in foot" value={t.showSpiral}
             onChange={(v) => setTweak('showSpiral', v)} />
           <TweakToggle label="Show brewing" value={t.showBrewing}
@@ -220,14 +217,9 @@ function TRHome({ nav, t }) {
         <MarketMarquee nav={nav} showBrewing={true} />
       </div>
 
-        {t.marketplaceLayout === 'grid'
-          ? <MarketGrid nav={nav} showBrewing={t.showBrewing} />
-          : <MarketMarquee nav={nav} showBrewing={t.showBrewing} />}
-      </div>
-
       {/* divider marquee — names cycling, matches reference */}
       <div style={{ marginTop: 36 }}>
-        <Marquee items={[...APPS.map((a) => a.title), ...SOON.map((s) => s.title), 'tea room', 'worry jar', 'pocket garden']} />
+        <Marquee items={[...APPS.map((a) => a.title), ...SOON.map((s) => s.title)]} />
       </div>
 
       {/* foot row */}
@@ -530,7 +522,7 @@ function TRInfo({ nav }) {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
           <TRInfoCard title="elsewhere" rows={[['are.na', '↗'], ['github', '↗'], ['letters (substack)', '↗'], ['email', 'hello @ tea.room']]} />
-          <TRInfoCard title="now (may 2026)" rows={[['reading', 'le guin essays'], ['listening', 'arthur russell loops'], ['making', 'lullaby machine'], ['drinking', 'genmaicha, lots']]} />
+          <TRInfoCard title="now (may 2026)" rows={[['reading', 'le guin essays'], ['listening', 'arthur russell loops'], ['making', 'tea room'], ['drinking', 'genmaicha, lots']]} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '18px 22px', border: `1px solid ${RULE}`, borderRadius: 12 }}>
             <SpiralMark size={48} color={INK} />
             <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: MUTE, lineHeight: 1.5 }}>
@@ -560,7 +552,7 @@ function TRInfoCard({ title, rows }) {
   );
 }
 
-// ─── play (scraps) ───────────────────────────────────────────
+// ─── play (the marketplace) ──────────────────────────────────
 function TRPlay({ nav }) {
   return (
     <div>
