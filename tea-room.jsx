@@ -203,7 +203,7 @@ function TRHome({ nav, t }) {
         </h1>
       </div>
 
-      {/* marketplace */}
+      {/* marketplace — marquee on home */}
       <div className="tr-pad" style={{ paddingTop: 8, paddingBottom: 8 }}>
         <div className="tr-market-head" style={{ marginBottom: 18, borderBottom: `1px solid ${RULE}`, paddingBottom: 14 }}>
           <div className="tr-market-title tr-display-lg" style={{
@@ -216,6 +216,9 @@ function TRHome({ nav, t }) {
             {APPS.length} open · {SOON.length} brewing
           </div>
         </div>
+
+        <MarketMarquee nav={nav} showBrewing={true} />
+      </div>
 
         {t.marketplaceLayout === 'grid'
           ? <MarketGrid nav={nav} showBrewing={t.showBrewing} />
