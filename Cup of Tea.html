@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>ayesha's tea room — portfolio explorations</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --display: 'Inter Tight', 'Söhne', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: var(--display); }
+  </style>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="design-canvas.jsx"></script>
+  <script type="text/babel" src="shared.jsx"></script>
+  <script type="text/babel" src="landings.jsx"></script>
+  <script type="text/babel" src="prototype.jsx"></script>
+
+  <script type="text/babel">
+    // Junior-designer reasoning at the top of the canvas, then the three
+    // landing variants side-by-side, then a fullscreen-able live prototype.
+    // Click any artboard's expand icon (or its label) to open in focus
+    // mode and click around inside.
+
+    function Note({ children }) {
+      return (
+        <div style={{
+          maxWidth: 760, fontFamily: 'var(--display)', fontSize: 15, lineHeight: 1.55,
+          color: 'rgba(40,30,20,.78)', padding: '14px 0 0',
+        }}>{children}</div>
+      );
+    }
+
+    function App() {
+      return (
+        <DesignCanvas>
+          <DCSection
+            id="brief"
+            title="ayesha's tea room — portfolio explorations"
+            subtitle="three landing directions + one clickable prototype. all in pink, all in tight modern grotesk + mono.">
+            <DCArtboard id="reasoning" label="brief & system" width={760} height={420}>
+              <div style={{ padding: '36px 36px', fontFamily: 'var(--display)', color: '#1a1414', height: '100%', display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: 'rgba(26,20,20,.55)', letterSpacing: '.08em', textTransform: 'uppercase' }}>
+                  brief
+                </div>
+                <h1 style={{ fontFamily: 'var(--display)', fontWeight: 500, fontSize: 30, letterSpacing: '-.025em', lineHeight: 1.12, margin: 0, textWrap: 'pretty' }}>
+                  a soft-pink marketplace for ayesha's vibe-coded apps — a portfolio that reads like a tea room, not a shop.
+                </h1>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, fontSize: 13, lineHeight: 1.5, marginTop: 4 }}>
+                  <div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'rgba(26,20,20,.55)', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 6 }}>system</div>
+                    <div>pink #f7d4dc · ink #1a1414</div>
+                    <div>display: Inter Tight (tight, modern grotesk)</div>
+                    <div>mono: JetBrains Mono (nav, marquee, meta)</div>
+                    <div>shapes: simple single-stroke blobs &amp; squiggles</div>
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'rgba(26,20,20,.55)', letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 6 }}>contains</div>
+                    <div>3 apps shipped (tea room, worry jar, pocket garden)</div>
+                    <div>3 brewing (lullaby machine, index of feelings, thumbprint)</div>
+                    <div>new room every few days</div>
+                  </div>
+                </div>
+                <div style={{ marginTop: 'auto', fontFamily: 'var(--mono)', fontSize: 11, color: 'rgba(26,20,20,.55)', lineHeight: 1.6 }}>
+                  → pan the canvas with two fingers / drag empty space. click any artboard label or the ⤢ icon to open it fullscreen.
+                </div>
+              </div>
+            </DCArtboard>
+          </DCSection>
+
+          <DCSection
+            id="landings"
+            title="3 landing directions"
+            subtitle="same content, same system — different composition. focus any to inspect at full size.">
+            <DCArtboard id="a" label="A · editorial statement (closest to ref)" width={1280} height={900}>
+              <LandingA />
+            </DCArtboard>
+            <DCArtboard id="b" label="B · wordmark + index" width={1280} height={900}>
+              <LandingB />
+            </DCArtboard>
+            <DCArtboard id="c" label="C · split manifesto" width={1280} height={900}>
+              <LandingC />
+            </DCArtboard>
+          </DCSection>
+
+          <DCSection
+            id="prototype"
+            title="live prototype — click around inside"
+            subtitle="full multi-page version using direction A. focus it (⤢ or click the label) and the nav, filters, app cards all work.">
+            <DCArtboard id="proto" label="live · home → work → app → info → play" width={1440} height={900}>
+              <Prototype />
+            </DCArtboard>
+          </DCSection>
+        </DesignCanvas>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
