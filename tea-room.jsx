@@ -1,7 +1,6 @@
 // Tea Room v2 — clickable marketplace built on landing direction A.
-// Home shows a marquee of app-store icons; clicking any
-// icon opens its app page. Spiral lifted from variant B replaces the
-// doodle in the foot row.
+// Home shows a big "play" button in a doodled circle; clicking goes
+// to the Play page where the full marketplace lives.
 
 const HERO_COPIES = {
   rooms: "hi i'm ayesha - a designer, poet, photographer, and musician who loves to vibe-code experimental apps and ecosystems. enjoy (:",
@@ -20,10 +19,8 @@ function TeaRoom() {
   const [trans, setTrans] = React.useState(0);
   const nav = (r) => { if (r === route) return; setRoute(r); setTrans((t) => t + 1); };
 
-  // Tweaks
   const [t, setTweak] = useTweaks(/*EDITMODE-BEGIN*/{
     "heroCopy": "rooms",
-    "marketplaceLayout": "grid",
     "showSpiral": true,
     "showBrewing": true
   }/*EDITMODE-END*/);
@@ -61,6 +58,7 @@ function TeaRoom() {
       </TweaksPanel>
       <style>{`
         @keyframes tr-fade { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+        @keyframes tr-spin-slow { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
         .stagger > * { animation: tr-fade .45s cubic-bezier(.2,.7,.3,1) both }
         .stagger > *:nth-child(1) { animation-delay: .02s }
         .stagger > *:nth-child(2) { animation-delay: .07s }
@@ -86,6 +84,12 @@ function TeaRoom() {
         .tr-display-lg { font-size: 28px; letter-spacing: -.02em; }
         .tr-app-hero h1 { font-size: clamp(40px, 6vw, 80px); }
         .tr-brewing h1 { font-size: 56px; }
+
+        .tr-play-circle { position: relative; width: 280px; height: 280px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .tr-play-circle svg.tr-play-doodle { position: absolute; inset: 0; width: 100%; height: 100%; transition: transform .8s cubic-bezier(.2,.7,.3,1); }
+        .tr-play-circle:hover svg.tr-play-doodle { transform: rotate(18deg) scale(1.04); }
+        .tr-play-circle .tr-play-label { position: relative; font-family: var(--display); font-size: 64px; font-weight: 500; letter-spacing: -.04em; color: ${INK}; transition: transform .35s; }
+        .tr-play-circle:hover .tr-play-label { transform: translateY(-2px); }
 
         @media (max-width: 900px) {
           .tr-pad { padding-left: 28px; padding-right: 28px; }
@@ -152,6 +156,8 @@ function TeaRoom() {
           .tr-brewing h1 { font-size: clamp(32px, 10vw, 48px) !important; }
           .tr-mini-foot { padding-left: 20px !important; padding-right: 20px !important; flex-direction: column; gap: 6px; text-align: center; }
           .tr-crumb { flex-wrap: wrap; gap: 8px; }
+          .tr-play-circle { width: 220px; height: 220px; }
+          .tr-play-circle .tr-play-label { font-size: 48px; }
         }
       `}</style>
     </div>
@@ -200,32 +206,15 @@ function TRHome({ nav, t }) {
         </h1>
       </div>
 
-      {/* marketplace — marquee on home */}
-      <div className="tr-pad" style={{ paddingTop: 8, paddingBottom: 8 }}>
-        <div className="tr-market-head" style={{ marginBottom: 18, borderBottom: `1px solid ${RULE}`, paddingBottom: 14 }}>
-          <div className="tr-market-title tr-display-lg" style={{
-            fontFamily: 'var(--display)', fontWeight: 400,
-            fontStyle: 'italic', color: INK,
-          }}>
-            the marketplace —
-          </div>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: 11, color: MUTE, letterSpacing: '.02em' }}>
-            {APPS.length} open · {SOON.length} brewing
-          </div>
-        </div>
-
-        <MarketMarquee nav={nav} showBrewing={true} />
-      </div>
-
-      {/* divider marquee — names cycling, matches reference */}
-      <div style={{ marginTop: 36 }}>
-        <Marquee items={[...APPS.map((a) => a.title), ...SOON.map((s) => s.title)]} />
+      {/* big play button in a doodled circle */}
+      <div className="tr-pad" style={{ display: 'flex', justifyContent: 'center', paddingTop: 24, paddingBottom: 64 }}>
+        <PlayCircle onClick={() => nav('play')} />
       </div>
 
       {/* foot row */}
       <div className="tr-foot tr-pad" style={{ paddingTop: 36, paddingBottom: 28 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <ArrowLink onClick={() => window.scrollTo({ top: document.body.scrollHeight * .2, behavior: 'smooth' })}>Work</ArrowLink>
+          <ArrowLink onClick={() => nav('home')}>Work</ArrowLink>
           <ArrowLink onClick={() => nav('play')}>Play</ArrowLink>
           <ArrowLink onClick={() => nav('info')}>Info</ArrowLink>
         </div>
@@ -248,7 +237,35 @@ function TRHome({ nav, t }) {
   );
 }
 
-// ─── spiral mark (lifted from B's vibe) ───────────────────────
+// ─── play circle (the big button) ─────────────────────────────
+function PlayCircle({ onClick }) {
+  return (
+    <div className="tr-play-circle" onClick={onClick} role="button" tabIndex={0}
+         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick(); }}>
+      <svg className="tr-play-doodle" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+        {/* wobbly hand-drawn circle, two passes for a sketchy feel */}
+        <path d="M150 22 C 210 24 270 70 274 140 C 278 210 220 274 152 276 C 84 278 26 220 24 152 C 22 84 80 22 150 22 Z"
+              fill="none" stroke={INK} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M152 30 C 214 34 264 78 268 144 C 272 208 218 270 150 270 C 86 270 32 214 30 150 C 28 86 86 30 152 30 Z"
+              fill="none" stroke={INK} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity=".5" />
+        {/* tiny decorative ticks around the circle */}
+        <g stroke={INK} strokeWidth="2" strokeLinecap="round">
+          <line x1="150" y1="6" x2="150" y2="14" />
+          <line x1="150" y1="286" x2="150" y2="294" />
+          <line x1="6" y1="150" x2="14" y2="150" />
+          <line x1="286" y1="150" x2="294" y2="150" />
+          <line x1="48" y1="48" x2="54" y2="54" />
+          <line x1="246" y1="48" x2="252" y2="54" />
+          <line x1="48" y1="246" x2="54" y2="252" />
+          <line x1="246" y1="246" x2="252" y2="252" />
+        </g>
+      </svg>
+      <span className="tr-play-label">play</span>
+    </div>
+  );
+}
+
+// ─── spiral mark ──────────────────────────────────────────────
 function SpiralMark({ size = 120, color = INK }) {
   return (
     <svg viewBox="0 0 140 140" width={size} height={size} style={{ overflow: 'visible', flexShrink: 0 }}>
@@ -309,72 +326,17 @@ function MarketCard({ app, kind, onOpen }) {
       <button className="tr-market-card-btn" onClick={(e) => { e.stopPropagation(); if (live) onOpen(); }}
         style={{
           flexShrink: 0,
-          border: 'none', borderRadius: 999,
+          border: live ? 'none' : `1px dashed ${RULE}`,
+          borderRadius: 999,
           background: live ? INK : 'transparent',
           color: live ? PINK : MUTE,
           padding: live ? '8px 16px' : '8px 14px',
           fontFamily: 'var(--mono)', fontSize: 12, fontWeight: 500, letterSpacing: '.04em',
           textTransform: 'uppercase', cursor: live ? 'pointer' : 'default',
-          border: live ? 'none' : `1px dashed ${RULE}`,
         }}>
         {live ? 'open' : 'soon'}
       </button>
     </div>
-  );
-}
-
-// ─── marketplace marquee ─────────────────────────────────────
-function MarketMarquee({ nav, showBrewing }) {
-  const items = [
-    ...APPS.map((a) => ({ kind: 'live', app: a })),
-    ...(showBrewing ? SOON.map((a) => ({ kind: 'brew', app: a })) : []),
-  ];
-  // duplicate so the marquee loops seamlessly
-  const ref = React.useRef(null);
-  const [paused, setPaused] = React.useState(false);
-  return (
-    <div style={{ position: 'relative', overflow: 'hidden', borderTop: `1px solid ${RULE}`, borderBottom: `1px solid ${RULE}`, padding: '24px 0' }}
-         onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-      <div ref={ref} style={{
-        display: 'inline-flex', gap: 18,
-        animation: `tr-mq 40s linear infinite`,
-        animationPlayState: paused ? 'paused' : 'running',
-      }}>
-        {[0, 1].map((k) => (
-          <div key={k} style={{ display: 'inline-flex', gap: 18, paddingRight: 18 }}>
-            {items.map(({ kind, app }) => (
-              <MarqueeIcon key={k + app.slug} app={app} kind={kind}
-                onOpen={() => kind === 'live' && nav('app:' + app.slug)} />
-            ))}
-          </div>
-        ))}
-      </div>
-      <style>{`@keyframes tr-mq { from { transform: translateX(0) } to { transform: translateX(-50%) } }`}</style>
-    </div>
-  );
-}
-
-function MarqueeIcon({ app, kind, onOpen }) {
-  const live = kind === 'live';
-  const [hov, setHov] = React.useState(false);
-  return (
-    <button onClick={onOpen} disabled={!live}
-            onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-            style={{
-              border: 'none', background: 'transparent', padding: 0,
-              cursor: live ? 'pointer' : 'default', textAlign: 'center',
-              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
-              minWidth: 110, opacity: live ? 1 : .55,
-              transform: hov && live ? 'translateY(-3px)' : 'none', transition: 'transform .25s',
-            }}>
-      <AppIcon slug={app.slug} size={88} bg={live ? app.color : '#ece4e6'} mark={live ? app.accent : MUTE} />
-      <div style={{ fontFamily: 'var(--display)', fontSize: 14, fontWeight: 500, color: INK, letterSpacing: '-.01em' }}>
-        {app.title}
-      </div>
-      <div style={{ fontFamily: 'var(--mono)', fontSize: 10, color: MUTE, letterSpacing: '.06em', textTransform: 'uppercase' }}>
-        {live ? 'open' : 'brewing'}
-      </div>
-    </button>
   );
 }
 
@@ -387,11 +349,11 @@ function TRAppDetail({ app, nav }) {
     <div>
       {/* breadcrumbs */}
       <div className="tr-crumb tr-pad" style={{ paddingTop: 24, paddingBottom: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'var(--mono)', fontSize: 12, color: MUTE }}>
-        <a href="#" onClick={(e) => { e.preventDefault(); nav('home'); }} style={{ color: MUTE, textDecoration: 'none' }}>← back to the room</a>
+        <a href="#" onClick={(e) => { e.preventDefault(); nav('play'); }} style={{ color: MUTE, textDecoration: 'none' }}>← back to the marketplace</a>
         <span>{app.n} of {APPS.length.toString().padStart(2, '0')}</span>
       </div>
 
-      {/* hero band — icon + name + description, app-store-detail vibe */}
+      {/* hero band */}
       <div className="stagger tr-app-hero tr-pad" style={{ paddingTop: 28, paddingBottom: 36 }}>
         <AppIcon slug={app.slug} size={156} bg={app.color} mark={app.accent} radius={36} />
         <div className="tr-app-hero-text" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -423,14 +385,11 @@ function TRAppDetail({ app, nav }) {
         </div>
       </div>
 
-      {/* description + preview placeholder */}
+      {/* description + preview */}
       <div className="tr-app-body tr-pad" style={{ paddingBottom: 36 }}>
         <div>
           <h3 style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: MUTE, margin: '0 0 12px' }}>about this room</h3>
           <p style={{ fontSize: 19, lineHeight: 1.5, margin: 0, maxWidth: '52ch' }}>{app.desc}</p>
-          <p style={{ fontSize: 16, lineHeight: 1.55, marginTop: 18, color: 'rgba(26,20,20,.7)', maxWidth: '52ch' }}>
-            i wanted this to feel like one of those rooms in a friend&apos;s house where everyone ends up sitting on the floor. small footprint, low lighting, nothing to optimise. arrive, do the thing, close the tab.
-          </p>
         </div>
         <div style={{
           aspectRatio: '4 / 5', background: app.color, borderRadius: 18, position: 'relative',
@@ -441,43 +400,10 @@ function TRAppDetail({ app, nav }) {
             preview · placeholder
           </div>
           <AppIcon slug={app.slug} size={180} bg="rgba(255,255,255,.55)" mark={app.accent} radius={42} />
-          <div style={{ position: 'absolute', bottom: 16, right: 18, fontFamily: 'var(--mono)', fontSize: 11, color: app.accent, opacity: .7 }}>
-            drop screenshot here
-          </div>
         </div>
       </div>
 
-      {/* meta strip */}
-      <div className="tr-app-meta tr-pad" style={{ borderTop: `1px solid ${RULE}`, borderBottom: `1px solid ${RULE}`, paddingTop: 18, paddingBottom: 18, fontFamily: 'var(--mono)', fontSize: 12 }}>
-        <DMeta k="status" v="open & steeping" />
-        <DMeta k="built in" v="3 evenings" />
-        <DMeta k="stack" v="react · web audio · localstorage" />
-        <DMeta k="changelog" v="v0.4 — added quiet mode" />
-      </div>
-
-      {/* next */}
-      <a href="#" onClick={(e) => { e.preventDefault(); nav('app:' + next.slug); }}
-         className="tr-app-next tr-pad"
-         style={{ paddingTop: 32, paddingBottom: 32,
-           color: INK, textDecoration: 'none', background: next.color + '88',
-           transition: 'background .2s' }}>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'rgba(26,20,20,.6)' }}>next room —</span>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-          <AppIcon slug={next.slug} size={56} bg={'rgba(255,255,255,.45)'} mark={next.accent} radius={14} />
-          <span className="tr-app-next-title">{next.title}  →</span>
-        </span>
-      </a>
-
       <MiniFoot />
-    </div>
-  );
-}
-
-function DMeta({ k, v }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <span style={{ color: MUTE, letterSpacing: '.06em', textTransform: 'uppercase', fontSize: 10 }}>{k}</span>
-      <span style={{ color: INK }}>{v}</span>
     </div>
   );
 }
@@ -490,11 +416,11 @@ function TRBrewing({ app, nav }) {
       <h1 style={{ fontFamily: 'var(--display)', fontWeight: 500, letterSpacing: '-.04em', margin: 0 }}>{app.title}</h1>
       <div style={{ fontSize: 20, color: MUTE, fontStyle: 'italic' }}>{app.tag}</div>
       <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: MUTE, letterSpacing: '.06em', textTransform: 'uppercase' }}>still brewing — back in a few days</div>
-      <button onClick={() => nav('home')} style={{
+      <button onClick={() => nav('play')} style={{
         marginTop: 12, border: `1px solid ${INK}`, background: 'transparent', color: INK,
         padding: '11px 22px', borderRadius: 999, fontFamily: 'var(--mono)', fontSize: 12,
         fontWeight: 500, letterSpacing: '.06em', textTransform: 'uppercase', cursor: 'pointer',
-      }}>← back to the room</button>
+      }}>← back to the marketplace</button>
     </div>
   );
 }
@@ -516,8 +442,8 @@ function TRInfo({ nav }) {
             most of these apps were vibe-coded in an evening or two. some never get finished. that&apos;s the point — the marketplace is the journal. come back in a few days, there&apos;ll be another room.
           </p>
           <div style={{ marginTop: 28, display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <ArrowLink onClick={() => nav('home')} size={22}>see what&apos;s open</ArrowLink>
-            <ArrowLink onClick={() => nav('play')} size={22}>poke at the scraps</ArrowLink>
+            <ArrowLink onClick={() => nav('play')} size={22}>visit the marketplace</ArrowLink>
+            <ArrowLink onClick={() => nav('home')} size={22}>back home</ArrowLink>
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
