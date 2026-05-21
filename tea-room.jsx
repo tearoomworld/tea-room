@@ -562,40 +562,16 @@ function TRInfoCard({ title, rows }) {
 
 // ─── play (scraps) ───────────────────────────────────────────
 function TRPlay({ nav }) {
-  const items = [
-    { name: 'fortune cookie', tag: 'click for a small inscrutable line', kind: 'toy' },
-    { name: 'kettle whistle', tag: 'a sound piece, 3 mins', kind: 'sound' },
-    { name: 'thursday poem', tag: 'a poem rewritten every thursday', kind: 'poem' },
-    { name: 'pink walk', tag: 'cursor follower with a soft tail', kind: 'toy' },
-    { name: 'voice memo', tag: 'unfinished song about a window', kind: 'sound' },
-    { name: 'three things', tag: 'a list of three things from today', kind: 'note' },
-  ];
   return (
     <div>
       <div className="tr-play-head tr-pad" style={{ paddingTop: 40, paddingBottom: 8 }}>
-        <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: MUTE, letterSpacing: '.08em', textTransform: 'uppercase' }}>play — scraps</div>
+        <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: MUTE, letterSpacing: '.08em', textTransform: 'uppercase' }}>play — the marketplace</div>
         <h2 className="tr-display-xl" style={{ fontFamily: 'var(--display)', fontWeight: 500, margin: '12px 0 16px', maxWidth: '22ch' }}>
-          little things that aren&apos;t quite apps but still wanted to be made.
+          small soft apps, made between songs and poems.
         </h2>
       </div>
-      <div className="stagger tr-play-grid tr-pad" style={{ paddingTop: 12, paddingBottom: 40 }}>
-        {items.map((it, i) => (
-          <div key={it.name} style={{
-            border: `1px solid ${RULE}`, borderRadius: 12, padding: 22,
-            display: 'flex', flexDirection: 'column', gap: 8, minHeight: 170,
-            background: i % 2 ? 'transparent' : 'rgba(255,255,255,.25)',
-            cursor: 'pointer', transition: 'transform .2s, background .2s',
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.background = 'rgba(255,255,255,.45)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.background = i % 2 ? 'transparent' : 'rgba(255,255,255,.25)'; }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'var(--mono)', fontSize: 11, color: MUTE, letterSpacing: '.08em', textTransform: 'uppercase' }}>{it.kind}</span>
-              <Blob size={28} color={INK} variant={['squiggle', 'wave', 'loop'][i % 3]} />
-            </div>
-            <div style={{ fontSize: 24, fontWeight: 500, letterSpacing: '-.025em', marginTop: 'auto' }}>{it.name}</div>
-            <div style={{ fontSize: 13, color: MUTE, fontStyle: 'italic' }}>{it.tag}</div>
-          </div>
-        ))}
+      <div className="tr-pad" style={{ paddingTop: 12, paddingBottom: 40 }}>
+        <MarketGrid nav={nav} showBrewing={true} />
       </div>
       <MiniFoot />
     </div>
